@@ -2,34 +2,36 @@
 using DataAccess.Abstract;
 using Entities.Concrete;
 using Entities.DTOs;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace DataAccess.Concrete.EntityFramework
 {
-    public class EfProductDal : EfEntityRepositoryBase<Product, ParamMarkatinDBContext>, IProductDal
+    //NuGet
+    public class EfProductDal : EfEntityRepositoryBase<Product, ParamMarketingDBContext>, IProductDal
     {
         public List<ProductDetailDto> GetProductDetails()
         {
-            using (ParamMarkatinDBContext context = new ParamMarkatinDBContext())
+            using (ParamMarketingDBContext context = new ParamMarketingDBContext())
             {
                 var result = from p in context.Products
-                             join c in context.Categories
+                             join c in context.Categories 
                              on p.CategoryId equals c.CategoryId
-                             select new ProductDetailDto
+                             select new ProductDetailDto 
                              {
-                                 ProductName = p.ProductName,
-                                 CategoryName = c.CategoryName,
-                                 UnitsInStock = p.UnitsInstock,
-                                 UnitPrice= p.UnitPrice,
-
-
+                                 ProductId = p.ProductId, 
+                                 ProductName = p.ProductName, 
+                                 CategoryName = c.CategoryName, 
+                                 UnitsInStock = p.UnitsInStock 
                              };
                 return result.ToList();
             }
+
         }
     }
 }
