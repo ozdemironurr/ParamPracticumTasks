@@ -9,20 +9,20 @@ using Core.Utilities.Messages;
 
 namespace Core.Aspects.Autofac.Exception
 {
-    public class ExceptionLogAspect:MethodInterception
+    public class ExceptionLogAspect : MethodInterception
     {
         private LoggerService _loggerService;
 
         public ExceptionLogAspect(Type loggerService)
         {
-            if (loggerService.BaseType!=typeof(LoggerService))
+            if (loggerService.BaseType != typeof(LoggerService))
             {
                 throw new System.Exception(AspectMessages.WrongLoggerType);
             }
 
             _loggerService = (LoggerService)Activator.CreateInstance(loggerService);
         }
-        protected override void OnException(IInvocation invocation,System.Exception e)
+        protected override void OnException(IInvocation invocation, System.Exception e)
         {
             LogDetailWithException logDetailWithException = GetLogDetail(invocation);
             logDetailWithException.ExceptionMessage = e.Message;
@@ -37,7 +37,7 @@ namespace Core.Aspects.Autofac.Exception
             {
                 logParameters.Add(new LogParameter
                 {
-                    Name= invocation.GetConcreteMethod().GetParameters()[i].Name,
+                    Name = invocation.GetConcreteMethod().GetParameters()[i].Name,
                     Value = invocation.Arguments[i],
                     Type = invocation.Arguments[i].GetType().Name
                 });

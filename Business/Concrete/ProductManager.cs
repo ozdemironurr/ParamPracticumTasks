@@ -85,6 +85,9 @@ namespace Business.Concrete
             return result;
 
         }
+        [PerformanceAspect(5)]
+        [LogAspect(typeof(DatabaseLogger))]
+        [CacheAspect(duration: 10)]
 
         public IDataResult<List<ProductDetailDto>> GetProductDetails()
         {

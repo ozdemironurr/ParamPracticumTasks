@@ -6,16 +6,12 @@ using Core.Aspects.Autofac.LogAspect;
 using Core.Aspects.Autofac.Performance;
 using Core.Aspects.Autofac.Validation;
 using Core.CrossCuttingConcerns.Logging.Log4Net.Layout.Loggers;
-using Core.Utilities.Business;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
 using DataAccess.Concrete.EntityFramework;
 using Entities.Concrete;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Entities.DTOs;
+
 
 namespace Business.Concrete
 {
@@ -45,7 +41,7 @@ namespace Business.Concrete
         }
         [ValidationAspect(typeof(ProductValidator), Priority = 1)]
         [CacheRemoveAspect("IProductService.Get")]
-        [LogAspect(typeof(FileLogger))]
+        [LogAspect(typeof(FileLogger))]      
         public IResult Update(Category category)
         {
             _categoryDal.Update(category);
@@ -70,7 +66,10 @@ namespace Business.Concrete
             }
             return result;
         }
-       
-       
+
+        public IDataResult<List<CategoryDetailDto>> GetCategoryDetails(int categoryId)
+        {
+            return new SuccessDataResult<List<CategoryDetailDto>>(_categoryDal.GetCategoryDetails(categoryId).OrderBy(c => c.CategoryName).ToList());
+        }
     }
 }

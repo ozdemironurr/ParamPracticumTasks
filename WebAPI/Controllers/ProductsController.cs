@@ -1,16 +1,31 @@
-﻿using Business.Abstarct;
+﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
+using Business.Abstarct;
+using Business.BusinessAspects.Autofac;
+using Core.Aspects.Autofac.Caching;
+using Core.Aspects.Autofac.LogAspect;
+using Core.Aspects.Autofac.Performance;
+using Core.CrossCuttingConcerns.Logging.Log4Net.Layout.Loggers;
+using Core.Utilities.Results;
 using Entities.Concrete;
+using Entities.DTOs.Quaries.Model;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebAPI.Controllers
+
 {
+    [Route("api/[controller]")]
+    [ApiController]
+    [SecuredOperation("Product.List,Admin")]
     public class ProductsController : ControllerBase
     {
-        IProductService _productService;
-        public ProductsController(IProductService productService)
+        private readonly IProductService _productService;
+        private readonly IMapper _mapper;
+        public ProductsController(IProductService productService, IMapper mapper)
         {
             _productService = productService;
+            _mapper = mapper;
         }
         [HttpPost("add")]
         public IActionResult Add([FromBody] Product product)
@@ -24,6 +39,7 @@ namespace WebAPI.Controllers
             return BadRequest(result);
 
         }
+        
         [HttpDelete("delete")]
         public IActionResult Delete([FromBody] Product product)
         {
@@ -84,8 +100,6 @@ namespace WebAPI.Controllers
             return BadRequest(result);
         }
 
-
-        [HttpGet("GetById")]
         public IActionResult GetById(int productId)
         {
             var result = _productService.GetById(productId);
@@ -95,6 +109,14 @@ namespace WebAPI.Controllers
             }
             return BadRequest(result);
         }
+        //[HttpGet("GetAllMappingTest")]
+        //public IActionResult GetAllMapping(int id)
+        //{
+        //    var products = _productService.GetById(id).ProjectTo<ProductDto>(_mapper.ConfigurationProvider).ToList();
+
+
+        //    return Ok(products);
+        //}
 
     }
 }

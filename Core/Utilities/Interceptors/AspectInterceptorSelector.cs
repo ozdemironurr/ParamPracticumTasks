@@ -1,5 +1,7 @@
 ﻿
 using Castle.DynamicProxy;
+using Core.Aspects.Autofac.Exception;
+using Core.CrossCuttingConcerns.Logging.Log4Net.Layout.Loggers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,7 +20,7 @@ namespace Core.Interceptors
             var methodAttributes = type.GetMethod(method.Name).GetCustomAttributes<MethodInterceptionBaseAttribute>(true);//Methotların attribute'larını oku
                
             classAttributes.AddRange(methodAttributes);// onları listeye koy
-           // classAttributes.Add(new ExceptionLogAspect(typeof(FileLogger)));  (Loglama altyapısını yaptıktan sonra default eklemek için kullanılır.
+            classAttributes.Add(new ExceptionLogAspect(typeof(FileLogger)));  
 
             return classAttributes.OrderBy(x => x.Priority).ToArray();// öncelik değerine göre sırala
         }

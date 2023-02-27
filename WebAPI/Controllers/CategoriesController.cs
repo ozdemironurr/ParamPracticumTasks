@@ -1,5 +1,8 @@
-﻿using Business.Abstarct;
+﻿using AutoMapper;
+using Business.Abstarct;
+using Business.BusinessAspects.Autofac;
 using Entities.Concrete;
+using Entities.DTOs.Quaries.Model;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -7,12 +10,15 @@ namespace WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [SecuredOperation("Product.List,Admin")]
     public class CategoriesController : ControllerBase
     {
         private readonly ICategoryService _categoryService;
-        public CategoriesController(ICategoryService categoryService)
+        private readonly IMapper _mapper;
+       public CategoriesController(ICategoryService categoryService,IMapper mapper)
         {
             _categoryService = categoryService;
+            _mapper = mapper;
         }
 
         [HttpPost("add")]
@@ -67,6 +73,18 @@ namespace WebAPI.Controllers
         public IActionResult GetById(int categoryId)
         {
             var result = _categoryService.GetById(categoryId);
+
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
+        }
+        
+        [HttpGet("getcategorydetails")]
+        public IActionResult GetCategoryDetails(int categoryId)
+        {
+            var result = _categoryService.GetCategoryDetails(categoryId);
 
             if (result.Success)
             {

@@ -8,6 +8,8 @@ using Core.Utilities.Security.JWT;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Core.Utilities.Security.Encryption;
+using Microsoft.Extensions.DependencyInjection;
+using System.Reflection;
 
 namespace WebAPI
 {
@@ -23,6 +25,9 @@ namespace WebAPI
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+            
+          
+        
 
 
 
@@ -31,7 +36,7 @@ namespace WebAPI
 
             builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory());
             builder.Host.ConfigureContainer<ContainerBuilder>(builder => builder.RegisterModule(new AutofacBusinessModule()));
-
+           
 
 
             var tokenOptions = builder.Configuration.GetSection("TokenOptions").Get<TokenOptions>();

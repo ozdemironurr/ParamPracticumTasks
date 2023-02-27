@@ -7,9 +7,8 @@ using System.Threading.Tasks;
 
 namespace Entities.DTOs
 {
-    public class ProductDetailDto:IDto
+    public class CategoryDetailDto:IDto
     {
-
         public string ProductName { get; set; }
         public string CategoryName { get; set; }
         public int UnitsInStock { get; set; }
