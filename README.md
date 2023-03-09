@@ -1,4 +1,4 @@
 ## ParamPracticumTasks
 
-![image](s.imgur.com/min/embed.js)
+![image](https://i.imgur.com/0oJkHWq.png)
 
